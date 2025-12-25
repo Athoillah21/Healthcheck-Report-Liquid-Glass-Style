@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Daily Report] PostgreSQL Database Handover Report Liquid - 2025-12-25</title>
+    <!-- No external dependencies - works fully offline -->
+    <style>
+        :root {
+            /* Elegant Liquid Glass */
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 40px rgba(0, 60, 120, 0.08);
+            
+            --accent: #1d4ed8;
+            --accent-light: #3b82f6;
+            --accent-soft: #dbeafe;
+            
+            --text-primary: #111827;
+            --text-secondary: #374151;
+            --text-muted: #6b7280;
+            
+            /* Status Colors */
+            --ok: #059669;
+            --ok-bg: rgba(5, 150, 105, 0.1);
+            --warn: #d97706;
+            --warn-bg: rgba(217, 119, 6, 0.1);
+            --alert: #dc2626;
+            --alert-bg: rgba(220, 38, 38, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            padding: 48px 24px;
+            color: var(--text-primary);
+            font-size: 15px;
+            line-height: 1.5;
+            background: 
+                radial-gradient(ellipse at 0% 0%, rgba(219, 234, 254, 0.8) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 100%, rgba(191, 219, 254, 0.6) 0%, transparent 50%),
+                linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* Elegant Header */
+        .header {
+            text-align: center;
+            padding: 56px 48px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 50%, #60a5fa 100%);
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--accent-soft);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+
+        .header-badge::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 28px;
+        }
+
+        .header-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .meta-divider {
+            width: 4px;
+            height: 4px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        .status-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--ok-bg);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--ok);
+        }
+
+        .status-live::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: var(--ok);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* Section Title */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            padding-left: 4px;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
+            border-radius: 2px;
+        }
+
+        /* Table */
+        .table-container {
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+        }
+
+        th {
+            padding: 18px 16px;
+            text-align: center;
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 20px 16px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.95rem;
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: rgba(29, 78, 216, 0.03);
+        }
+
+        .instance-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .hostname {
+            font-family: 'SF Mono', 'Consolas', monospace;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Status Pills */
+        .status-ok {
+            background: var(--ok-bg);
+            color: var(--ok);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-warn {
+            background: var(--warn-bg);
+            color: var(--warn);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-alert {
+            background: var(--alert-bg);
+            color: var(--alert);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-na {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-safe {
+            background: var(--ok-bg);
+            color: var(--ok);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Replication Badges */
+        .repl-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: #ffffff;
+            padding: 7px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+        }
+
+        .repl-replica {
+            background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+            color: #ffffff;
+            padding: 7px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
+        }
+
+        .repl-unsync {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: #ffffff;
+            padding: 7px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+        }
+
+        /* Role Badge */
+        .role-master {
+            background: var(--accent-soft);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .role-slave {
+            background: rgba(13, 148, 136, 0.12);
+            color: #0d9488;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        small {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--text-muted);
+        }
+
+        footer p {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            font-size: 0.9rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            backdrop-filter: blur(16px);
+        }
+
+        footer p::before {
+            content: "⚡";
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .table-container { overflow-x: auto; }
+            table { min-width: 1000px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 24px 16px; font-size: 14px; }
+            .header { padding: 40px 24px; }
+            .header h1 { font-size: 1.75rem; }
+            .header-meta { gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header glass-card">
+            <div class="header-badge">Daily Report</div>
+            <h1>PostgreSQL Database Handover Report</h1>
+            <p class="subtitle">Comprehensive Fleet Health Monitoring Dashboard</p>
+            <div class="header-meta">
+                <span class="meta-item"><strong>Date:</strong> 2025-12-25</span>
+                <span class="meta-divider"></span>
+                <span class="meta-item"><strong>Time:</strong> 13:51:16 WIB</span>
+                <span class="meta-divider"></span>
+                <span class="status-live">System Active</span>
+            </div>
+        </header>
+
+        <h2 class="section-title">Instance Health Summary</h2>
+        <div class="table-container glass-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Instance</th>
+                        <th>Hostname</th>
+                        <th>Port</th>
+                        <th>Role</th>
+                        <th>Replication</th>
+                        <th>Connections</th>
+                        <th>Dead Tuples</th>
+                        <th>XID Age</th>
+                        <th>Blocking</th>
+                        <th>Disk</th>
+                    </tr>
+                </thead>
+                <tbody>
+<tr>
+        <td>PPHPE</td>
+        <td>hpebrnpdb1</td>
+        <td>9807</td>
+        <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
+        <td><div class='status-ok'>12/5000 (0%)</div></td>
+        <td><div class='status-ok'>10907<br/><small>(siftprod_schema.etr_2025_11_18)</small></div></td>
+        <td><div class='status-ok'>167.1M</div></td>
+        <td><div class='status-ok'>0</div></td>
+        <td><div class='status-safe'>/data/PPHPE<br/><small>(38.37%)</small></div></td>
+      </tr>
+<tr>
+        <td>PPESBSMSC</td>
+        <td>esbsmscpdb1</td>
+        <td>5432</td>
+        <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
+        <td><div class='status-ok'>422/10000 (4%)</div></td>
+        <td><div class='status-ok'>116759<br/><small>(esbapps_schema.sms_notification)</small></div></td>
+        <td><div class='status-ok'>192.6M</div></td>
+        <td><div class='status-ok'>0</div></td>
+        <td><div class='status-alert'>/data<br/><small>(77.23%)</small></div></td>
+      </tr>
+<tr>
+        <td>PPRAFM</td>
+        <td>rafmpdb04-new.telkomsel.co.id</td>
+        <td>5432</td>
+        <td>Master</td> <td><div class='repl-primary'>SYNC</div> , Backup Running</td>
+        <td><div class='status-warn'>11556/13000 (89%)</div></td>
+        <td><div class='status-warn'>921421<br/><small>(fmref_schema.esb_block)</small></div></td>
+        <td><div class='status-ok'>199.7M</div></td>
+        <td><div class='status-ok'>0</div></td>
+        <td><div class='status-alert'>/data/postgres<br/><small>(82.89%)</small></div></td>
+      </tr>
+<tr>
+        <td>PPDQMQUINCY(dqm)</td>
+        <td>pgsqltbspdb2</td>
+        <td>9954</td>
+        <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
+        <td><div class='status-ok'>286/2000 (14%)</div></td>
+        <td><div class='status-warn'>222582<br/><small>(dqm_schema.ops_tp_app_profiling)</small></div></td>
+        <td><div class='status-ok'>198.9M</div></td>
+        <td><div class='status-ok'>0</div></td>
+        <td><div class='status-safe'>/data/PPDQMQUINCY<br/><small>(67.77%)</small></div></td>
+      </tr>
+<tr>
+        <td>PPEBILL</td>
+        <td>e-billpdb1</td>
+        <td>5999</td>
+        <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
+        <td><div class='status-ok'>209/2000 (10%)</div></td>
+        <td><div class='status-warn'>942716<br/><small>(smy_ebill.billing_cycle_details)</small></div></td>
+        <td><div class='status-ok'>198.0M</div></td>
+        <td><div class='status-ok'>0</div></td>
+        <td><div class='status-safe'>/data/PPEBILL14<br/><small>(38.36%)</small></div></td>
+      </tr>
+<tr>
+        <td>PPCIAMNEW</td>
+        <td>pgsqltbspdb1</td>
+        <td>9920</td>
+        <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
+        <td><div class='status-ok'>451/3000 (15%)</div></td>
+        <td><div class='status-ok'>191654<br/><small>(openidm.clusterobjects)</small></div></td>
+        <td><div class='status-ok'>198.9M</div></td>
+        <td><div class='status-ok'>0</div></td>
+        <td><div class='status-safe'>/data/PPCIAMNEW<br/><small>(64.60%)</small></div></td>
+      </tr>
+<tr>
+        <td>PPMYTSELUHIS</td>
+        <td>pgsqlbsdpdb1</td>
+        <td>9943</td>
+        <td>Master</td> <td><div class='repl-unsync'>UNSYNC</div> <br/>(No Replicas)</td>
+        <td><div class='status-ok'>78/2000 (4%)</div></td>
+        <td><div class='status-ok'>0</div></td>
+        <td><div class='status-ok'>783030</div></td>
+        <td><div class='status-ok'>0</div></td>
+        <td><div class='status-safe'>/data/PPMYTSELUHIS<br/><small>(45.23%)</small></div></td>
+      </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+    <footer>
+        <p>Generated by PostgreSQL Healthcheck Report Script - Telkomsigma</p>
+    </footer>
+</body>
+</html>

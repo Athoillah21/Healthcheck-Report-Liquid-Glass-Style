@@ -1,6 +1,5 @@
-# Output reports
-*.html
-report/
+# Output reports (ignore HTML in root, but track result/ folder)
+/*.html
 
 # Logs
 *.log
@@ -12,3 +11,7 @@ report/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Keep result folder tracked
+!result/
+!result/*.html
