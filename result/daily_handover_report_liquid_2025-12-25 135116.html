@@ -439,81 +439,81 @@
                 </thead>
                 <tbody>
 <tr>
-        <td>PPHPE</td>
-        <td>hpebrnpdb1</td>
-        <td>9807</td>
+        <td>Instance-A</td>
+        <td>db-server-01</td>
+        <td>****</td>
         <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
         <td><div class='status-ok'>12/5000 (0%)</div></td>
-        <td><div class='status-ok'>10907<br/><small>(siftprod_schema.etr_2025_11_18)</small></div></td>
+        <td><div class='status-ok'>10907<br/><small>(app_schema.sample_table)</small></div></td>
         <td><div class='status-ok'>167.1M</div></td>
         <td><div class='status-ok'>0</div></td>
-        <td><div class='status-safe'>/data/PPHPE<br/><small>(38.37%)</small></div></td>
+        <td><div class='status-safe'>/data<br/><small>(38.37%)</small></div></td>
       </tr>
 <tr>
-        <td>PPESBSMSC</td>
-        <td>esbsmscpdb1</td>
-        <td>5432</td>
+        <td>Instance-B</td>
+        <td>db-server-02</td>
+        <td>****</td>
         <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
         <td><div class='status-ok'>422/10000 (4%)</div></td>
-        <td><div class='status-ok'>116759<br/><small>(esbapps_schema.sms_notification)</small></div></td>
+        <td><div class='status-ok'>116759<br/><small>(app_schema.notifications)</small></div></td>
         <td><div class='status-ok'>192.6M</div></td>
         <td><div class='status-ok'>0</div></td>
         <td><div class='status-alert'>/data<br/><small>(77.23%)</small></div></td>
       </tr>
 <tr>
-        <td>PPRAFM</td>
-        <td>rafmpdb04-new.telkomsel.co.id</td>
-        <td>5432</td>
+        <td>Instance-C</td>
+        <td>db-server-03.example.com</td>
+        <td>****</td>
         <td>Master</td> <td><div class='repl-primary'>SYNC</div> , Backup Running</td>
         <td><div class='status-warn'>11556/13000 (89%)</div></td>
-        <td><div class='status-warn'>921421<br/><small>(fmref_schema.esb_block)</small></div></td>
+        <td><div class='status-warn'>921421<br/><small>(ref_schema.data_block)</small></div></td>
         <td><div class='status-ok'>199.7M</div></td>
         <td><div class='status-ok'>0</div></td>
         <td><div class='status-alert'>/data/postgres<br/><small>(82.89%)</small></div></td>
       </tr>
 <tr>
-        <td>PPDQMQUINCY(dqm)</td>
-        <td>pgsqltbspdb2</td>
-        <td>9954</td>
+        <td>Instance-D</td>
+        <td>db-server-04</td>
+        <td>****</td>
         <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
         <td><div class='status-ok'>286/2000 (14%)</div></td>
-        <td><div class='status-warn'>222582<br/><small>(dqm_schema.ops_tp_app_profiling)</small></div></td>
+        <td><div class='status-warn'>222582<br/><small>(analytics_schema.app_profiling)</small></div></td>
         <td><div class='status-ok'>198.9M</div></td>
         <td><div class='status-ok'>0</div></td>
-        <td><div class='status-safe'>/data/PPDQMQUINCY<br/><small>(67.77%)</small></div></td>
+        <td><div class='status-safe'>/data<br/><small>(67.77%)</small></div></td>
       </tr>
 <tr>
-        <td>PPEBILL</td>
-        <td>e-billpdb1</td>
-        <td>5999</td>
+        <td>Instance-E</td>
+        <td>db-server-05</td>
+        <td>****</td>
         <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
         <td><div class='status-ok'>209/2000 (10%)</div></td>
-        <td><div class='status-warn'>942716<br/><small>(smy_ebill.billing_cycle_details)</small></div></td>
+        <td><div class='status-warn'>942716<br/><small>(billing_schema.cycle_details)</small></div></td>
         <td><div class='status-ok'>198.0M</div></td>
         <td><div class='status-ok'>0</div></td>
-        <td><div class='status-safe'>/data/PPEBILL14<br/><small>(38.36%)</small></div></td>
+        <td><div class='status-safe'>/data<br/><small>(38.36%)</small></div></td>
       </tr>
 <tr>
-        <td>PPCIAMNEW</td>
-        <td>pgsqltbspdb1</td>
-        <td>9920</td>
+        <td>Instance-F</td>
+        <td>db-server-06</td>
+        <td>****</td>
         <td>Master</td> <td><div class='repl-primary'>SYNC</div> </td>
         <td><div class='status-ok'>451/3000 (15%)</div></td>
-        <td><div class='status-ok'>191654<br/><small>(openidm.clusterobjects)</small></div></td>
+        <td><div class='status-ok'>191654<br/><small>(identity_schema.cluster_objects)</small></div></td>
         <td><div class='status-ok'>198.9M</div></td>
         <td><div class='status-ok'>0</div></td>
-        <td><div class='status-safe'>/data/PPCIAMNEW<br/><small>(64.60%)</small></div></td>
+        <td><div class='status-safe'>/data<br/><small>(64.60%)</small></div></td>
       </tr>
 <tr>
-        <td>PPMYTSELUHIS</td>
-        <td>pgsqlbsdpdb1</td>
-        <td>9943</td>
+        <td>Instance-G</td>
+        <td>db-server-07</td>
+        <td>****</td>
         <td>Master</td> <td><div class='repl-unsync'>UNSYNC</div> <br/>(No Replicas)</td>
         <td><div class='status-ok'>78/2000 (4%)</div></td>
         <td><div class='status-ok'>0</div></td>
         <td><div class='status-ok'>783030</div></td>
         <td><div class='status-ok'>0</div></td>
-        <td><div class='status-safe'>/data/PPMYTSELUHIS<br/><small>(45.23%)</small></div></td>
+        <td><div class='status-safe'>/data<br/><small>(45.23%)</small></div></td>
       </tr>
             </tbody>
             </table>
