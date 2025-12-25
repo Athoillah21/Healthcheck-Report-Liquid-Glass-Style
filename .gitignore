@@ -1,0 +1,14 @@
+# Output reports
+*.html
+report/
+
+# Logs
+*.log
+
+# Sensitive files
+.pgpass
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db
